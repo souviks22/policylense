@@ -24,6 +24,8 @@ class DiffChunk(BaseModel):
     type: ChangeType
     old_text: Optional[str] = None
     new_text: Optional[str] = None
+    old_text_diff: Optional[str] = None
+    new_text_diff: Optional[str] = None
     section: Optional[str] = None
     line_start: Optional[int] = None
     line_end: Optional[int] = None

@@ -17,6 +17,8 @@ export interface DiffChunk {
   type: ChangeType;
   old_text: string | null;
   new_text: string | null;
+  old_text_diff?: string | null;
+  new_text_diff?: string | null;
   section: string | null;
   line_start: number | null;
   line_end: number | null;

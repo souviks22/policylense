@@ -10,7 +10,7 @@ dist/
 build/
 .pytest_cache/
 *.db
-chroma_db/
+chroma_db*/
 *test.py
 
 # Node

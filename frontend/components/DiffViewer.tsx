@@ -10,11 +10,28 @@ interface Props {
   result: ComparisonResult;
 }
 
-function highlight(text: string, type: "old" | "new") {
+function renderDiffBlock(
+  text: string | null,
+  diffHtml: string | null | undefined,
+  type: "old" | "new",
+) {
   const cls = type === "old"
     ? "bg-crimson-500/10 text-crimson-200"
     : "bg-jade-500/10 text-jade-200";
-  return <span className={cn("block rounded px-1 py-0.5", cls)}>{text}</span>;
+
+  if (!text && !diffHtml) {
+    return <span className="text-ink-700 italic">—</span>;
+  }
+
+  return (
+    <div
+      className={cn(
+        "block rounded px-1 py-0.5 whitespace-pre-wrap break-words",
+        cls,
+      )}
+      dangerouslySetInnerHTML={{ __html: diffHtml ?? text ?? "" }}
+    />
+  );
 }
 
 function DiffChunkRow({ chunk }: { chunk: DiffChunk }) {
@@ -30,15 +47,11 @@ function DiffChunkRow({ chunk }: { chunk: DiffChunk }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 sm:divide-x divide-ink-800">
         <div className="p-3 sm:p-4 text-xs font-mono leading-relaxed text-ink-400 min-h-[2rem] border-b sm:border-b-0 border-ink-800">
           <p className="text-xs text-ink-600 mb-1 sm:hidden">Before:</p>
-          {chunk.old_text
-            ? highlight(chunk.old_text, "old")
-            : <span className="text-ink-700 italic">—</span>}
+          {renderDiffBlock(chunk.old_text, chunk.old_text_diff, "old")}
         </div>
         <div className="p-3 sm:p-4 text-xs font-mono leading-relaxed text-ink-400 min-h-[2rem]">
           <p className="text-xs text-ink-600 mb-1 sm:hidden">After:</p>
-          {chunk.new_text
-            ? highlight(chunk.new_text, "new")
-            : <span className="text-ink-700 italic">—</span>}
+          {renderDiffBlock(chunk.new_text, chunk.new_text_diff, "new")}
         </div>
       </div>
     </div>
